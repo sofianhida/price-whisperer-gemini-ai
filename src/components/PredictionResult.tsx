@@ -29,13 +29,13 @@ const PredictionResult = ({ data, productName }: PredictionResultProps) => {
     { name: 'Maximum', value: parseInt(data.priceRange.max.replace(/\D/g, '')) }
   ];
 
-  const formatRupiah = (value: number) => {
-    return new Intl.NumberFormat('id-ID', {
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'IDR',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
-    }).format(value).replace('IDR', 'Rp');
+    }).format(value);
   };
 
   const getPriceColor = (type: string) => {
@@ -51,46 +51,63 @@ const PredictionResult = ({ data, productName }: PredictionResultProps) => {
     }
   };
 
+  const getPriceLabel = (type: string) => {
+    switch (type) {
+      case 'low':
+        return 'Low Price';
+      case 'medium':
+        return 'Medium Price';
+      case 'high':
+        return 'High Price';
+      default:
+        return 'Price Point';
+    }
+  };
+
   return (
-    <Card className="w-full">
+    <Card className="w-full border border-secondary shadow-lg bg-gradient-to-br from-background to-secondary/5">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <span>Hasil Prediksi: {productName}</span>
-          <Badge className={getPriceColor(data.priceType)}>
-            {data.priceType === 'low' ? 'Harga Rendah' : 
-             data.priceType === 'medium' ? 'Harga Sedang' : 'Harga Tinggi'}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div>
+            <CardTitle className="text-2xl font-bold">Prediction: {productName}</CardTitle>
+            <CardDescription className="text-base mt-1">
+              Confidence level: {data.confidence}%
+            </CardDescription>
+          </div>
+          <Badge className={`${getPriceColor(data.priceType)} px-3 py-1 text-sm font-medium`}>
+            {getPriceLabel(data.priceType)}
           </Badge>
-        </CardTitle>
-        <CardDescription>
-          Confidence level: {data.confidence}%
-        </CardDescription>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="text-center">
-          <h3 className="text-sm font-medium text-muted-foreground">Harga yang Diprediksi</h3>
-          <p className="text-3xl font-bold text-primary">{data.predictedPrice}</p>
-          <p className="text-sm text-muted-foreground">
-            Kisaran: {data.priceRange.min} - {data.priceRange.max}
+      <CardContent className="space-y-8">
+        <div className="text-center bg-secondary/20 rounded-lg py-6 px-4">
+          <h3 className="text-sm font-medium text-muted-foreground mb-1">Predicted Price</h3>
+          <p className="text-4xl font-bold text-primary">{data.predictedPrice}</p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Range: {data.priceRange.min} - {data.priceRange.max}
           </p>
         </div>
 
-        <div className="h-64">
+        <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
-              <YAxis tickFormatter={(value) => formatRupiah(value)} />
-              <Tooltip formatter={(value) => formatRupiah(Number(value))} />
-              <Bar dataKey="value" fill="hsl(var(--primary))" />
+              <YAxis tickFormatter={(value) => formatCurrency(value)} />
+              <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+              <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div>
-          <h3 className="mb-2 font-medium">Faktor yang Mempengaruhi Harga:</h3>
-          <ul className="list-disc pl-5 space-y-1">
+        <div className="bg-secondary/10 p-5 rounded-lg">
+          <h3 className="mb-3 font-medium text-lg">Factors Influencing Price:</h3>
+          <ul className="space-y-2">
             {data.factors.map((factor, index) => (
-              <li key={index}>{factor}</li>
+              <li key={index} className="flex items-start">
+                <span className="inline-block h-5 w-5 rounded-full bg-primary/20 text-primary text-xs flex items-center justify-center font-bold mr-2 mt-0.5">{index + 1}</span>
+                <span>{factor}</span>
+              </li>
             ))}
           </ul>
         </div>

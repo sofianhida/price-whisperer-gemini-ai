@@ -43,96 +43,100 @@ const ProductForm = ({ onSubmit, isLoading }: ProductFormProps) => {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Prediksi Harga Produk</CardTitle>
-        <CardDescription>
-          Masukkan detail produk untuk mendapatkan prediksi harga
+    <Card className="w-full border border-secondary shadow-lg bg-gradient-to-br from-background to-secondary/5">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl font-bold">Product Price Prediction</CardTitle>
+        <CardDescription className="text-base">
+          Enter product details to get a price estimate
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label htmlFor="name">Nama Produk</Label>
+              <Label htmlFor="name" className="font-medium">Product Name</Label>
               <Input 
                 id="name" 
                 name="name" 
-                placeholder="Masukkan nama produk" 
+                placeholder="Enter product name" 
                 value={productData.name}
                 onChange={handleChange}
                 required
+                className="border-muted-foreground/20"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="category">Kategori</Label>
+              <Label htmlFor="category" className="font-medium">Category</Label>
               <Select 
                 onValueChange={handleCategoryChange} 
                 value={productData.category}
                 required
               >
-                <SelectTrigger id="category">
-                  <SelectValue placeholder="Pilih kategori" />
+                <SelectTrigger id="category" className="border-muted-foreground/20">
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="smartphone">Smartphone</SelectItem>
                   <SelectItem value="laptop">Laptop</SelectItem>
-                  <SelectItem value="clothing">Pakaian</SelectItem>
-                  <SelectItem value="electronics">Elektronik</SelectItem>
-                  <SelectItem value="furniture">Furnitur</SelectItem>
-                  <SelectItem value="other">Lainnya</SelectItem>
+                  <SelectItem value="clothing">Clothing</SelectItem>
+                  <SelectItem value="electronics">Electronics</SelectItem>
+                  <SelectItem value="furniture">Furniture</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="brand">Merek</Label>
+            <Label htmlFor="brand" className="font-medium">Brand</Label>
             <Input 
               id="brand" 
               name="brand" 
-              placeholder="Masukkan merek produk" 
+              placeholder="Enter product brand" 
               value={productData.brand}
               onChange={handleChange}
               required
+              className="border-muted-foreground/20"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="features">Fitur/Spesifikasi</Label>
+            <Label htmlFor="features" className="font-medium">Features/Specifications</Label>
             <Input 
               id="features"
               name="features" 
-              placeholder="Masukkan fitur atau spesifikasi produk" 
+              placeholder="Enter product features or specifications" 
               value={productData.features}
               onChange={handleChange}
               required
+              className="border-muted-foreground/20"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="historicalPrices">
-              Data Harga Historis (opsional)
+            <Label htmlFor="historicalPrices" className="font-medium">
+              Historical Price Data (optional)
             </Label>
             <Input 
               id="historicalPrices"
               name="historicalPrices" 
-              placeholder="Contoh: 2.500.000 (Jan), 2.400.000 (Feb), 2.350.000 (Mar)" 
+              placeholder="Example: $2,500 (Jan), $2,400 (Feb), $2,350 (Mar)" 
               value={productData.historicalPrices}
               onChange={handleChange}
+              className="border-muted-foreground/20"
             />
           </div>
         </form>
       </CardContent>
       <CardFooter>
         <Button 
-          className="w-full" 
+          className="w-full font-medium text-base transition-all hover:shadow-lg" 
           type="submit" 
           onClick={handleSubmit} 
           disabled={isLoading}
         >
-          {isLoading ? 'Memproses...' : 'Prediksi Harga'}
+          {isLoading ? 'Processing...' : 'Predict Price'}
         </Button>
       </CardFooter>
     </Card>

@@ -18,57 +18,57 @@ const PriceWhisperer = () => {
     
     try {
       const prompt = `
-        Kamu adalah asisten AI yang menganalisis harga produk. Tolong prediksi harga produk berikut berdasarkan detailnya:
+        You are an AI assistant that analyzes product prices. Please predict the price for the following product based on its details:
         
-        Nama Produk: ${data.name}
-        Kategori: ${data.category}
-        Merek: ${data.brand}
-        Fitur/Spesifikasi: ${data.features}
-        ${data.historicalPrices ? `Data Harga Historis: ${data.historicalPrices}` : ''}
+        Product Name: ${data.name}
+        Category: ${data.category}
+        Brand: ${data.brand}
+        Features/Specifications: ${data.features}
+        ${data.historicalPrices ? `Historical Price Data: ${data.historicalPrices}` : ''}
         
-        Berikan respons dalam format JSON berikut:
+        Provide your response in the following JSON format:
         {
-          "predictedPrice": "Rp X.XXX.XXX", 
+          "predictedPrice": "$X,XXX.XX", 
           "priceRange": { 
-            "min": "Rp X.XXX.XXX", 
-            "max": "Rp X.XXX.XXX"
+            "min": "$X,XXX.XX", 
+            "max": "$X,XXX.XX"
           },
           "confidence": 85,
           "priceType": "low|medium|high",
-          "factors": ["faktor 1", "faktor 2", "faktor 3"]
+          "factors": ["factor 1", "factor 2", "factor 3"]
         }
         
-        Berikan prediksi yang masuk akal berdasarkan tren pasar Indonesia saat ini.
+        Give a reasonable prediction based on current market trends.
       `;
       
       const result = await generatePricePrediction(prompt);
       setPredictionData(result);
       
       toast({
-        title: "Prediksi Berhasil",
-        description: "Hasil prediksi harga berhasil didapatkan.",
+        title: "Prediction Success",
+        description: "Price prediction results are ready.",
       });
     } catch (error) {
       console.error('Prediction error:', error);
       toast({
         title: 'Error',
-        description: 'Gagal mendapatkan prediksi harga. Silakan coba lagi.',
+        description: 'Failed to get price prediction. Please try again.',
         variant: 'destructive',
       });
       
       // Set fallback data for demonstration
       setPredictionData({
-        predictedPrice: "Rp 2.499.000",
+        predictedPrice: "$2,499.00",
         priceRange: {
-          min: "Rp 2.299.000",
-          max: "Rp 2.799.000"
+          min: "$2,299.00",
+          max: "$2,799.00"
         },
         confidence: 75,
         priceType: "medium",
         factors: [
-          "Spesifikasi standar untuk kategori ini",
-          "Merek memiliki posisi menengah di pasar",
-          "Fitur yang ditawarkan sesuai dengan harga"
+          "Standard specifications for this category",
+          "Brand has a mid-tier market position",
+          "Features offered match the price point"
         ]
       });
     } finally {
@@ -78,13 +78,13 @@ const PriceWhisperer = () => {
 
   return (
     <div className="w-full max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <ProductForm onSubmit={handleSubmit} isLoading={isLoading} />
         {isLoading ? (
-          <Card className="w-full flex items-center justify-center min-h-[400px]">
+          <Card className="w-full flex items-center justify-center min-h-[400px] bg-gradient-to-br from-background to-secondary/20 border border-secondary shadow-lg">
             <div className="text-center">
               <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-muted-foreground">Memproses prediksi harga...</p>
+              <p className="text-muted-foreground font-medium">Processing price prediction...</p>
             </div>
           </Card>
         ) : (
