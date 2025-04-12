@@ -4,7 +4,7 @@ import ProductForm, { ProductData } from './ProductForm';
 import PredictionResult, { PredictionData } from './PredictionResult';
 import { Card } from '@/components/ui/card';
 import { generatePricePrediction } from '@/services/geminiApi';
-import { useToast } from '@/components/ui/toast';
+import { useToast } from '@/hooks/use-toast';
 
 const PriceWhisperer = () => {
   const [isLoading, setIsLoading] = useState(false);

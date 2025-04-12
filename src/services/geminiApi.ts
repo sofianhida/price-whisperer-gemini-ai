@@ -17,8 +17,9 @@ export const generatePricePrediction = async (prompt: string) => {
       maxOutputTokens: 1024,
     };
 
+    // Fixed format for generateContent call
     const result = await model.generateContent({
-      contents: [{ parts: [{ text: prompt }] }],
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig,
     });
 
